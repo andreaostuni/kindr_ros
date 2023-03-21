@@ -1,18 +1,23 @@
 <?xml version="1.0"?>
-<package format="2">
+<package format="3">
   <name>kindr_ros</name>
-  <version>0.3.4</version>
+  <version>1.0.0</version>
   <description>The kindr_ros package</description>
+  <maintainer email="andrea.ostuni@polito.it">Andrea Ostuni</maintainer>
   <maintainer email="rdiethelm@anybotics.com">Remo Diethelm</maintainer>
   <maintainer email="pleemann@anybotics.com">Philipp Leemann</maintainer>
   <license>BSD</license>
+
   <author email="cgehring@anybotics.com">Christian Gehring</author>
-  <url>https://github.com/anybotics/kindr_ros</url>
-  <buildtool_depend>catkin</buildtool_depend>
+
+  <url>https://github.com/andreaostuni/kindr_ros</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
   <depend>kindr</depend>
   <depend>geometry_msgs</depend>
-  <depend>tf</depend>
+
+  <depend>tf2</depend>
   <build_export_depend>eigen</build_export_depend>
-  <test_depend>gtest</test_depend>
-<!--   <test_depend>cmake_code_coverage</test_depend> -->
+  <test_depend>ament_cmake_gtest</test_depend>
 </package>

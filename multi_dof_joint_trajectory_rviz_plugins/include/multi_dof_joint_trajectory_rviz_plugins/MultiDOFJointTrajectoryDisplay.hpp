@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_DISPLAY_HPP
+#define MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_DISPLAY_HPP
 
 #ifndef Q_MOC_RUN
 #include <vector>
@@ -26,15 +27,16 @@
 #include "multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryPointVisual.hpp"
 
 
-namespace multi_dof_joint_trajectory_rviz_plugins {
-
-class MultiDOFJointTrajectoryDisplay: public rviz::MessageFilterDisplay<trajectory_msgs::MultiDOFJointTrajectory>
+namespace multi_dof_joint_trajectory_rviz_plugins
 {
-Q_OBJECT
+
+class MultiDOFJointTrajectoryDisplay : public rviz::MessageFilterDisplay<trajectory_msgs::MultiDOFJointTrajectory>
+{
+  Q_OBJECT
+
 public:
   MultiDOFJointTrajectoryDisplay();
   virtual ~MultiDOFJointTrajectoryDisplay();
-
 
 protected:
   virtual void onInitialize();
@@ -73,7 +75,7 @@ private Q_SLOTS:
   void updateTrajectory();
 
 private:
-  void processMessage(const trajectory_msgs::MultiDOFJointTrajectory::ConstPtr& msg);
+  void processMessage(const trajectory_msgs::MultiDOFJointTrajectory::ConstPtr & msg);
 
   void updateShowConnection();
   void updateShowTransformRotation();
@@ -99,35 +101,37 @@ private:
   void updateFontSize();
   void updateShowText();
 
-  boost::circular_buffer<std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointVisual>>> visuals_points_;
-  boost::circular_buffer<std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>>> visuals_connections_;
+  boost::circular_buffer<std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointVisual>>>
+  visuals_points_;
+  boost::circular_buffer<std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>>>
+  visuals_connections_;
 
-  rviz::BoolProperty* property_show_connection_;
-  rviz::BoolProperty* property_show_transform_rotation_;
-  rviz::BoolProperty* property_show_velocity_linear_;
-  rviz::BoolProperty* property_show_velocity_angular_;
-  rviz::BoolProperty* property_show_acceleration_linear_;
-  rviz::BoolProperty* property_show_acceleration_angular_;
+  rviz::BoolProperty * property_show_connection_;
+  rviz::BoolProperty * property_show_transform_rotation_;
+  rviz::BoolProperty * property_show_velocity_linear_;
+  rviz::BoolProperty * property_show_velocity_angular_;
+  rviz::BoolProperty * property_show_acceleration_linear_;
+  rviz::BoolProperty * property_show_acceleration_angular_;
 
-  rviz::FloatProperty* property_size_transform_rotation_;
-  rviz::FloatProperty* property_diameter_arrows_;
-  rviz::FloatProperty* property_scale_velocity_linear_;
-  rviz::FloatProperty* property_scale_velocity_angular_;
-  rviz::FloatProperty* property_scale_acceleration_linear_;
-  rviz::FloatProperty* property_scale_acceleration_angular_;
+  rviz::FloatProperty * property_size_transform_rotation_;
+  rviz::FloatProperty * property_diameter_arrows_;
+  rviz::FloatProperty * property_scale_velocity_linear_;
+  rviz::FloatProperty * property_scale_velocity_angular_;
+  rviz::FloatProperty * property_scale_acceleration_linear_;
+  rviz::FloatProperty * property_scale_acceleration_angular_;
 
-  rviz::ColorProperty* property_color_connection_;
-  rviz::ColorProperty* property_color_velocity_linear_;
-  rviz::ColorProperty* property_color_velocity_angular_;
-  rviz::ColorProperty* property_color_acceleration_linear_;
-  rviz::ColorProperty* property_color_acceleration_angular_;
+  rviz::ColorProperty * property_color_connection_;
+  rviz::ColorProperty * property_color_velocity_linear_;
+  rviz::ColorProperty * property_color_velocity_angular_;
+  rviz::ColorProperty * property_color_acceleration_linear_;
+  rviz::ColorProperty * property_color_acceleration_angular_;
 
-  rviz::FloatProperty* property_alpha_;
+  rviz::FloatProperty * property_alpha_;
 
-  rviz::FloatProperty* property_font_size_;
-  rviz::BoolProperty* property_show_text_;
+  rviz::FloatProperty * property_font_size_;
+  rviz::BoolProperty * property_show_text_;
 
-  rviz::IntProperty* property_history_length_;
+  rviz::IntProperty * property_history_length_;
 
   bool show_connection_;
   bool show_transform_rotation_;
@@ -157,3 +161,5 @@ private:
 };
 
 } // multi_dof_joint_trajectory_rviz_plugins
+
+#endif // MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_DISPLAY_HPP

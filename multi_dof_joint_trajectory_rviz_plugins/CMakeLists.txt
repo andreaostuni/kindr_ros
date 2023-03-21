@@ -1,47 +1,48 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(multi_dof_joint_trajectory_rviz_plugins)
 
-# Set compiler flags
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-
-find_package(catkin REQUIRED COMPONENTS
-   rviz
-   trajectory_msgs
-)
-
-catkin_package(
-  INCLUDE_DIRS
-    include
-  LIBRARIES
-    ${PROJECT_NAME}
-  CATKIN_DEPENDS
-    rviz
-    trajectory_msgs
-)
-
-link_directories(${catkin_LIBRARY_DIRS})
-
-## This plugin includes Qt widgets, so we must include Qt like so:
-if(rviz_QT_VERSION VERSION_GREATER "5.0.0")
-  find_package(Qt5Widgets REQUIRED)
-else()
-  find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
-  include(${QT_USE_FILE})
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+endif()
+
+# Qt5 boilerplate options from http://doc.qt.io/qt-5/cmake-manual.html
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+
+
+find_package(ament_cmake REQUIRED)
+find_package(pluginlib REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Test Concurrent)
+find_package(rviz_common REQUIRED)
+find_package(rviz_default_plugins REQUIRED)
+find_package(rviz_ogre_vendor REQUIRED)
+find_package(rviz_rendering REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(trajectory_msgs REQUIRED)
+
+include_directories(
+  include
+)
+
+## Here we specify which header files need to be run through "moc",
+## Qt's meta-object compiler.
+set(multi_dof_joint_trajectory_rviz_plugins_headers_to_moc
+  include/multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryDisplay.hpp
+  include/multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryPointConnectionVisual.hpp
+  include/multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryPointVisual.hpp
+)
+
+set(library_name ${PROJECT_NAME})
 
 ## I prefer the Qt signals and slots to avoid defining "emit", "slots",
 ## etc because they can conflict with boost signals, so define QT_NO_KEYWORDS here.
 add_definitions(-DQT_NO_KEYWORDS)
 
-## Here we specify which header files need to be run through "moc",
-## Qt's meta-object compiler.
-set(multi_dof_joint_trajectory_rviz_plugins_HDRS_QT
-  include/multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryDisplay.hpp
-)
-set(multi_dof_joint_trajectory_rviz_plugins_HDRS
-  include/multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryPointConnectionVisual.hpp
-  include/multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryPointVisual.hpp
-)
 
 set(multi_dof_joint_trajectory_rviz_plugins_SRCS
   src/MultiDOFJointTrajectoryDisplay.cpp
@@ -49,72 +50,78 @@ set(multi_dof_joint_trajectory_rviz_plugins_SRCS
   src/MultiDOFJointTrajectoryPointVisual.cpp
 )
 
-if(rviz_QT_VERSION VERSION_GREATER "5.0.0")
-  qt5_wrap_cpp(multi_dof_joint_trajectory_rviz_plugins_MOCS
-    ${multi_dof_joint_trajectory_rviz_plugins_HDRS_QT}
+set(dependencies
+  ament_cmake
+  pluginlib
+  Qt5
+  rviz_common
+  rviz_default_plugins
+  rviz_ogre_vendor
+  rviz_rendering
+  trajectory_msgs
   )
-else()
-  qt4_wrap_cpp(multi_dof_joint_trajectory_rviz_plugins_MOCS
-    ${multi_dof_joint_trajectory_rviz_plugins_HDRS_QT}
-  )
-endif()
 
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
+ament_target_dependencies(${library_name}
+  ${dependencies}
 )
 
-add_library(${PROJECT_NAME}
-  ${multi_dof_joint_trajectory_rviz_plugins_SRCS}
-  ${multi_dof_joint_trajectory_rviz_plugins_HDRS_QT}
-  ${multi_dof_joint_trajectory_rviz_plugins_HDRS}
-  ${multi_dof_joint_trajectory_rviz_plugins_MOCS}
+target_include_directories(${library_name} PUBLIC
+  ${Qt5Widgets_INCLUDE_DIRS}
+  ${OGRE_INCLUDE_DIRS}
 )
 
-target_link_libraries(${PROJECT_NAME}
-  ${QT_LIBRARIES} ${catkin_LIBRARIES}
+target_link_libraries(${library_name}
+  rviz_common::rviz_common
 )
 
-if(rviz_QT_VERSION VERSION_GREATER "5.0.0")
-  target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
-else()
-  target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-endif()
+# Causes the visibility macros to use dllexport rather than dllimport,
+# which is appropriate when building the dll but not consuming it.
+# TODO: Make this specific to this project (not rviz default plugins)
+target_compile_definitions(${library_name} PRIVATE "RVIZ_DEFAULT_PLUGINS_BUILDING_LIBRARY")
+
+pluginlib_export_plugin_description_file(rviz_common plugin_description.xml)
 
 ## Install rules
 
-install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+install(
+  TARGETS ${library_name}
+  EXPORT ${library_name}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
 )
 
-install(FILES plugin_description.xml
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+install(
+  DIRECTORY include/
+  DESTINATION include/
 )
 
 install(DIRECTORY icons
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ##########
 ## Test ##
 ##########
-if(CATKIN_ENABLE_TESTING)
-  catkin_add_gtest(test_${PROJECT_NAME}
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(${PROJECT_NAME}_test
     test/EmptyTests.cpp
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test
   )
-
-  if(TARGET test_${PROJECT_NAME})
-    target_link_libraries( test_${PROJECT_NAME}
-      ${PROJECT_NAME}
-      ${catkin_LIBRARIES}
-      gtest_main
-    )
-    find_package(cmake_code_coverage QUIET)
-    if(cmake_code_coverage_FOUND)
-      add_gtest_coverage()
-    endif(cmake_code_coverage_FOUND)
-  endif()
+  ament_target_dependencies(${PROJECT_NAME}_test
+    ${dependencies}
+  )
+  ament_lint_auto_find_test_dependencies()
 endif()
+
+ament_export_include_directories(include)
+ament_export_targets(${library_name} HAS_LIBRARY_TARGET)
+ament_export_dependencies(
+  Qt5
+  rviz_common
+  trajectory_msgs
+)
+
+ament_package()

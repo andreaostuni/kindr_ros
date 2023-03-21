@@ -1,16 +1,16 @@
 // ogre
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreSceneManager.h>
+#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
 
 // tf
-#include <tf/transform_listener.h>
+#include <tf2_ros/transform_listener.h>
 
 // rviz
-#include <rviz/visualization_manager.h>
-#include <rviz/properties/color_property.h>
-#include <rviz/properties/float_property.h>
-#include <rviz/properties/int_property.h>
-#include <rviz/frame_manager.h>
+#include <rviz_common/visualization_manager.hpp>
+#include <rviz_common/properties/color_property.hpp>
+#include <rviz_common/properties/float_property.hpp>
+#include <rviz_common/properties/int_property.hpp>
+#include <rviz_common/frame_manager_iface.hpp>
 
 // kindr rviz plugins
 #include "kindr_rviz_plugins/VectorAtPositionDisplay.hpp"
@@ -30,35 +30,35 @@ VectorAtPositionDisplay::VectorAtPositionDisplay()
 {
   connect(this, SIGNAL(updateVectorAtPositionSignal()), this, SLOT(updateVectorAtPosition()));
 
-  length_scale_property_ = new rviz::FloatProperty("Length scale", 1.0,
+  length_scale_property_ = new rviz_common::properties::FloatProperty("Length scale", 1.0,
                                                    "Scale of the length of the vector.",
                                                    this, SLOT(updateScale()));
 
-  width_scale_property_ = new rviz::FloatProperty("Width scale", 1.0,
+  width_scale_property_ = new rviz_common::properties::FloatProperty("Width scale", 1.0,
                                                   "Scale of the width of the vector.",
                                                   this, SLOT(updateScale()));
-  width_scale_property_->setMin(0);
+  width_scale_property_->setMin(0.0);
 
-  show_text_property_ = new rviz::BoolProperty("Show text", true,
+  show_text_property_ = new rviz_common::properties::BoolProperty("Show text", true,
                                               "Enable or disable text rendering.",
                                               this, SLOT(updateShowText()));
 
-  color_property_ = new rviz::ColorProperty("Color", QColor(0, 0, 0),
+  color_property_ = new rviz_common::properties::ColorProperty("Color", QColor(0, 0, 0),
                                             "Color to draw the vector (if not defined by vector type).",
                                             this, SLOT(updateColorAndAlpha()));
 
-  alpha_property_ = new rviz::FloatProperty("Alpha", 1.0,
+  alpha_property_ = new rviz_common::properties::FloatProperty("Alpha", 1.0,
                                             "0 is fully transparent, 1.0 is fully opaque.",
                                             this, SLOT(updateColorAndAlpha()));
 
-  history_length_property_ = new rviz::IntProperty("History Length", 1,
+  history_length_property_ = new rviz_common::properties::IntProperty("History Length", 1,
                                                    "Number of prior measurements to display.",
                                                    this, SLOT(updateHistoryLength()));
   history_length_property_->setMin(1);
   history_length_property_->setMax(100000);
 }
 
-// After the top-level rviz::Display::initialize() does its own setup,
+// After the top-level rviz_common::Display::initialize() does its own setup,
 // it calls the subclass's onInitialize() function. This is where we
 // instantiate all the workings of the class. We make sure to also
 // call our immediate super-class's onInitialize() function, since it
@@ -128,7 +128,7 @@ void VectorAtPositionDisplay::updateHistoryLength()
 
 void VectorAtPositionDisplay::updateVectorAtPosition() {
 
-  // Here we call the rviz::FrameManager to get the transform from the
+  // Here we call the rviz_common::FrameManager to get the transform from the
   // fixed frame to the frame in the header of this VectorAtPosition message.
   Ogre::Vector3 positionFixedToPositionFrameInFixedFrame;
   Ogre::Vector3 positionFixedToArrowInFixedFrame;
@@ -146,7 +146,7 @@ void VectorAtPositionDisplay::updateVectorAtPosition() {
                                                   positionFixedToPositionFrameInFixedFrame,
                                                   orientationArrowFrameToFixedFrame))
     {
-      ROS_ERROR("Error transforming from frame '%s' to frame '%s'", current_vector_at_position_->position_frame_id.c_str(), qPrintable(fixed_frame_));
+      RCUTILS_LOG_ERROR("Error transforming from frame '%s' to frame '%s'", current_vector_at_position_->position_frame_id.c_str(), qPrintable(fixed_frame_));
       return;
     }
 
@@ -160,7 +160,7 @@ void VectorAtPositionDisplay::updateVectorAtPosition() {
                                                   positionFixedToPositionFrameInFixedFrame,
                                                   orientationPositionFrameToFixedFrame))
     {
-      ROS_ERROR("Error transforming from frame '%s' to frame '%s'", current_vector_at_position_->position_frame_id.c_str(), qPrintable(fixed_frame_));
+      RCUTILS_LOG_ERROR("Error transforming from frame '%s' to frame '%s'", current_vector_at_position_->position_frame_id.c_str(), qPrintable(fixed_frame_));
       return;
     }
 
@@ -171,7 +171,7 @@ void VectorAtPositionDisplay::updateVectorAtPosition() {
                                                   dummyPosition,
                                                   orientationArrowFrameToFixedFrame))
     {
-      ROS_ERROR("Error transforming from frame '%s' to frame '%s'", current_vector_at_position_->header.frame_id.c_str(), qPrintable(fixed_frame_));
+      RCUTILS_LOG_ERROR("Error transforming from frame '%s' to frame '%s'", current_vector_at_position_->header.frame_id.c_str(), qPrintable(fixed_frame_));
       return;
     }
 
@@ -186,7 +186,7 @@ void VectorAtPositionDisplay::updateVectorAtPosition() {
 
   // We are keeping a circular buffer of visual pointers. This gets
   // the next one, or creates and stores it if the buffer is not full
-  boost::shared_ptr<VectorAtPositionVisual> visual;
+  std::shared_ptr<VectorAtPositionVisual> visual;
   if(visuals_.full())
   {
     visual = visuals_.front();
@@ -209,7 +209,7 @@ void VectorAtPositionDisplay::updateVectorAtPosition() {
 }
 
 // This is our callback to handle an incoming message.
-void VectorAtPositionDisplay::processMessage(const kindr_msgs::VectorAtPosition::ConstPtr& msg)
+void VectorAtPositionDisplay::processMessage(kindr_msgs::msg::VectorAtPosition::ConstSharedPtr msg)
 {
   current_vector_at_position_ = msg;
   Q_EMIT updateVectorAtPositionSignal();
@@ -220,5 +220,5 @@ void VectorAtPositionDisplay::processMessage(const kindr_msgs::VectorAtPosition:
 
 // Tell pluginlib about this class. It is important to do this in
 // global scope, outside our package's namespace.
-#include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(kindr_rviz_plugins::VectorAtPositionDisplay, rviz::Display)
+#include <pluginlib/class_list_macros.hpp>  // NOLINT
+PLUGINLIB_EXPORT_CLASS(kindr_rviz_plugins::VectorAtPositionDisplay, rviz_common::Display)

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_POINT_VISUAL_HPP
+#define MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_POINT_VISUAL_HPP
 
 #include <vector>
 
@@ -15,34 +16,35 @@
 #include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
 
 
-namespace multi_dof_joint_trajectory_rviz_plugins {
+namespace multi_dof_joint_trajectory_rviz_plugins
+{
 
 class MultiDOFJointTrajectoryPointVisual
 {
 public:
   MultiDOFJointTrajectoryPointVisual(
-      Ogre::SceneManager* scene_manager,
-      Ogre::SceneNode* parent_node,
-      const trajectory_msgs::MultiDOFJointTrajectoryPoint& msg,
-      bool show_transform_rotation,
-      bool show_velocity_linear,
-      bool show_velocity_angular,
-      bool show_acceleration_linear,
-      bool show_acceleration_angular,
-      float size_transform_rotation,
-      float diameter_arrows,
-      float scale_velocity_linear,
-      float scale_velocity_angular,
-      float scale_acceleration_linear,
-      float scale_acceleration_angular,
-      float alpha_transform_rotatation,
-      const Ogre::ColourValue& color_velocity_linear,
-      const Ogre::ColourValue& color_velocity_angular,
-      const Ogre::ColourValue& color_acceleration_linear,
-      const Ogre::ColourValue& color_acceleration_angular,
-      const std::vector<std::string>& captions,
-      float font_size,
-      bool show_text);
+    Ogre::SceneManager * scene_manager,
+    Ogre::SceneNode * parent_node,
+    const trajectory_msgs::MultiDOFJointTrajectoryPoint & msg,
+    bool show_transform_rotation,
+    bool show_velocity_linear,
+    bool show_velocity_angular,
+    bool show_acceleration_linear,
+    bool show_acceleration_angular,
+    float size_transform_rotation,
+    float diameter_arrows,
+    float scale_velocity_linear,
+    float scale_velocity_angular,
+    float scale_acceleration_linear,
+    float scale_acceleration_angular,
+    float alpha_transform_rotatation,
+    const Ogre::ColourValue & color_velocity_linear,
+    const Ogre::ColourValue & color_velocity_angular,
+    const Ogre::ColourValue & color_acceleration_linear,
+    const Ogre::ColourValue & color_acceleration_angular,
+    const std::vector<std::string> & captions,
+    float font_size,
+    bool show_text);
   virtual ~MultiDOFJointTrajectoryPointVisual();
 
   void setShowTransformRotation(bool visible);
@@ -59,15 +61,14 @@ public:
   void setScaleAccelerationAngular(float scale);
 
   void setAlphaTransformRotation(float alpha);
-  void setColorVelocityLinear(const Ogre::ColourValue& color);
-  void setColorVelocityAngular(const Ogre::ColourValue& color);
-  void setColorAccelerationLinear(const Ogre::ColourValue& color);
-  void setColorAccelerationAngular(const Ogre::ColourValue& color);
+  void setColorVelocityLinear(const Ogre::ColourValue & color);
+  void setColorVelocityAngular(const Ogre::ColourValue & color);
+  void setColorAccelerationLinear(const Ogre::ColourValue & color);
+  void setColorAccelerationAngular(const Ogre::ColourValue & color);
 
-  void setCaptions(const std::vector<std::string>& captions);
+  void setCaptions(const std::vector<std::string> & captions);
   void setFontSize(float font_size);
   void setShowText(bool show_text);
-
 
 private:
   void updateSizeTransformRotation();
@@ -87,12 +88,12 @@ private:
   void updateFontSize();
   void updateShowText();
 
-  Ogre::ColourValue getColor(const Ogre::ColourValue& color, bool visible);
+  Ogre::ColourValue getColor(const Ogre::ColourValue & color, bool visible);
   float getCharacterHeight();
 
-  Ogre::SceneManager* scene_manager_;
+  Ogre::SceneManager * scene_manager_;
 
-  std::vector<Ogre::SceneNode*> transforms_position_;
+  std::vector<Ogre::SceneNode *> transforms_position_;
   std::vector<boost::shared_ptr<rviz::Axes>> transforms_rotation_;
   std::vector<boost::shared_ptr<rviz::Arrow>> velocities_linear_;
   std::vector<boost::shared_ptr<rviz::Arrow>> velocities_angular_;
@@ -133,3 +134,4 @@ private:
 
 } // multi_dof_joint_trajectory_rviz_plugins
 
+#endif // MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_POINT_VISUAL_HPP

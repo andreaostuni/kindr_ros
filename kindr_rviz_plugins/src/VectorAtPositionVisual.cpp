@@ -27,27 +27,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <OGRE/OgreVector3.h>
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreSceneManager.h>
+#include <OgreVector3.h>
+#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
 
-#include <rviz/ogre_helpers/arrow.h>
-#include <rviz/ogre_helpers/billboard_line.h>
-#include <rviz/ogre_helpers/movable_text.h>
+#include "rviz_rendering/objects/arrow.hpp"
+#include <rviz_rendering/objects/billboard_line.hpp>
+#include <rviz_rendering/objects/movable_text.hpp>
+
+#include "rviz_rendering/visibility_control.hpp"
 
 #include "kindr_rviz_plugins/VectorAtPositionVisual.hpp"
 
 
-namespace kindr_rviz_plugins {
+namespace kindr_rviz_plugins
+{
 
-VectorAtPositionVisual::VectorAtPositionVisual(Ogre::SceneManager* scene_manager, Ogre::SceneNode* parent_node)
+VectorAtPositionVisual::VectorAtPositionVisual(
+  Ogre::SceneManager * scene_manager,
+  Ogre::SceneNode * parent_node)
 : vector_(Ogre::Vector3::UNIT_Z),
   length_(0.0),
   lengthScalingFactor_(1.0),
   widthScalingFactor_(1.0),
   showText_(true),
   showTorque_(false),
-  color_(Ogre::ColourValue(0,0,0,1))
+  color_(Ogre::ColourValue(0, 0, 0, 1))
 {
   scene_manager_ = scene_manager;
 
@@ -66,9 +71,9 @@ VectorAtPositionVisual::VectorAtPositionVisual(Ogre::SceneManager* scene_manager
 
   // We create the arrow object within the frame node so that we can
   // set its position and direction relative to its header frame.
-  arrow_.reset(new rviz::Arrow(scene_manager_, scene_node_arrow_, 0.8f, 0.07f, 0.2f, 0.15f));
-  circle_.reset(new rviz::BillboardLine(scene_manager_, scene_node_circle_));
-  circleArrow_.reset(new rviz::Arrow( scene_manager_, scene_node_circle_ ));
+  arrow_.reset(new rviz_rendering::Arrow(scene_manager_, scene_node_arrow_, 0.8f, 0.07f, 0.2f, 0.15f));
+  circle_.reset(new rviz_rendering::BillboardLine(scene_manager_, scene_node_circle_));
+  circleArrow_.reset(new rviz_rendering::Arrow(scene_manager_, scene_node_circle_));
 }
 
 VectorAtPositionVisual::~VectorAtPositionVisual()
@@ -80,7 +85,7 @@ VectorAtPositionVisual::~VectorAtPositionVisual()
   scene_manager_->destroySceneNode(scene_node_text_);
 }
 
-void VectorAtPositionVisual::setMessage(const kindr_msgs::VectorAtPosition::ConstPtr& msg)
+void VectorAtPositionVisual::setMessage(const kindr_msgs::msg::VectorAtPosition::ConstSharedPtr & msg)
 {
   // Check if type is torque
   showTorque_ = msg->type == msg->TYPE_TORQUE;
@@ -92,7 +97,7 @@ void VectorAtPositionVisual::setMessage(const kindr_msgs::VectorAtPosition::Cons
   vector_ = Ogre::Vector3(msg->vector.x, msg->vector.y, msg->vector.z);
 
   // Set the position of the arrow.
-  arrow_->setPosition(Ogre::Vector3(0,0,0));
+  arrow_->setPosition(Ogre::Vector3(0, 0, 0));
 
   // Set the orientation of the arrow to match the direction of the vector.
   arrow_->setDirection(vector_);
@@ -114,12 +119,12 @@ void VectorAtPositionVisual::setMessage(const kindr_msgs::VectorAtPosition::Cons
 
 }
 
-void VectorAtPositionVisual::setArrowPosition(const Ogre::Vector3& position)
+void VectorAtPositionVisual::setArrowPosition(const Ogre::Vector3 & position)
 {
   scene_node_frame_->setPosition(position);
 }
 
-void VectorAtPositionVisual::setArrowOrientation(const Ogre::Quaternion& orientation)
+void VectorAtPositionVisual::setArrowOrientation(const Ogre::Quaternion & orientation)
 {
   scene_node_frame_->setOrientation(orientation);
 }
@@ -131,7 +136,7 @@ void VectorAtPositionVisual::setScalingFactors(float lengthScalingFactor, float 
   updateScaling();
 }
 
-void VectorAtPositionVisual::setColor(const Ogre::ColourValue& color)
+void VectorAtPositionVisual::setColor(const Ogre::ColourValue & color)
 {
   color_ = color;
   updateColor();
@@ -146,28 +151,38 @@ void VectorAtPositionVisual::setShowText(bool showText)
 void VectorAtPositionVisual::updateScaling()
 {
   // Scale the arrow's thickness in each dimension along with its length and scaling factors.
-  arrow_->setScale(Ogre::Vector3(lengthScalingFactor_ * length_, widthScalingFactor_, widthScalingFactor_));
+  arrow_->setScale(
+    Ogre::Vector3(
+      lengthScalingFactor_ * length_, widthScalingFactor_,
+      widthScalingFactor_));
 
   // Scale the circle arrow
-  if(showTorque_) {
+  if (showTorque_) {
     // Get orientation of arrow in scene
-    Ogre::Vector3 axis_z(0,0,1);
+    Ogre::Vector3 axis_z(0, 0, 1);
     Ogre::Quaternion orientation = axis_z.getRotationTo(lengthScalingFactor_ * vector_);
-    if ( orientation.isNaN() ) {orientation = Ogre::Quaternion::IDENTITY;}
+    if (orientation.isNaN() ) {orientation = Ogre::Quaternion::IDENTITY;}
 
     // Set position and direction of the arrowhead
-    circleArrow_->set(0, widthScalingFactor_*0.1, widthScalingFactor_*0.1*1.0, widthScalingFactor_*0.1*2.0);
-    circleArrow_->setPosition(orientation * Ogre::Vector3(std::fabs(lengthScalingFactor_)*length_/4, 0, std::fabs(lengthScalingFactor_)*length_/2));
-    circleArrow_->setDirection(orientation * Ogre::Vector3(0,1,0));
+    circleArrow_->set(
+      0, widthScalingFactor_ * 0.1, widthScalingFactor_ * 0.1 * 1.0,
+      widthScalingFactor_ * 0.1 * 2.0);
+    circleArrow_->setPosition(
+      orientation *
+      Ogre::Vector3(
+        std::fabs(lengthScalingFactor_) * length_ / 4, 0,
+        std::fabs(lengthScalingFactor_) * length_ / 2));
+    circleArrow_->setDirection(orientation * Ogre::Vector3(0, 1, 0));
 
     // Add circular arrow points
     circle_->clear();
-    circle_->setLineWidth(widthScalingFactor_*0.05);
+    circle_->setLineWidth(widthScalingFactor_ * 0.05);
     for (int i = 4; i <= 32; i++) {
-        Ogre::Vector3 point = Ogre::Vector3((std::fabs(lengthScalingFactor_)*length_/4)*cos(i*2*M_PI/32),
-                                            (std::fabs(lengthScalingFactor_)*length_/4)*sin(i*2*M_PI/32),
-                                             std::fabs(lengthScalingFactor_)*length_/2);
-        circle_->addPoint(orientation * point);
+      Ogre::Vector3 point = Ogre::Vector3(
+        (std::fabs(lengthScalingFactor_) * length_ / 4) * cos(i * 2 * M_PI / 32),
+        (std::fabs(lengthScalingFactor_) * length_ / 4) * sin(i * 2 * M_PI / 32),
+        std::fabs(lengthScalingFactor_) * length_ / 2);
+      circle_->addPoint(orientation * point);
     }
   }
 }
@@ -175,7 +190,7 @@ void VectorAtPositionVisual::updateScaling()
 void VectorAtPositionVisual::updateColor()
 {
   arrow_->setColor(color_);
-  if(showTorque_) {
+  if (showTorque_) {
     circle_->setColor(color_.r, color_.g, color_.b, color_.a);
     circleArrow_->setColor(color_.r, color_.g, color_.b, color_.a);
   }
@@ -184,10 +199,10 @@ void VectorAtPositionVisual::updateColor()
 void VectorAtPositionVisual::updateText()
 {
   // add description text if available
-  const std::string textString = showText_? name_ : "";
-  text_.reset(new rviz::MovableText(textString));
+  const std::string textString = showText_ ? name_ : "";
+  text_.reset(new rviz_rendering::MovableText(textString));
   text_->setCharacterHeight(0.1);
-  text_->setTextAlignment(rviz::MovableText::H_CENTER, rviz::MovableText::V_BELOW);
+  text_->setTextAlignment(rviz_rendering::MovableText::H_CENTER, rviz_rendering::MovableText::V_BELOW);
   scene_node_text_->attachObject(text_.get());
 }
 
