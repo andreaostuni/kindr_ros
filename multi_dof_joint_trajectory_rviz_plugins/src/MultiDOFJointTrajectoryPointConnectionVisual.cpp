@@ -6,8 +6,8 @@ namespace multi_dof_joint_trajectory_rviz_plugins {
 MultiDOFJointTrajectoryPointConnectionVisual::MultiDOFJointTrajectoryPointConnectionVisual(
     Ogre::SceneManager* scene_manager,
     Ogre::SceneNode* parent_node,
-    const trajectory_msgs::MultiDOFJointTrajectoryPoint& from,
-    const trajectory_msgs::MultiDOFJointTrajectoryPoint& to,
+    const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& from,
+    const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& to,
     float show_connection,
     const Ogre::ColourValue& color)
 : scene_manager_(scene_manager),
@@ -23,7 +23,7 @@ MultiDOFJointTrajectoryPointConnectionVisual::MultiDOFJointTrajectoryPointConnec
   // lines
   for (unsigned int i = 0; i < from.transforms.size(); i++)
   {
-    lines_.push_back(boost::shared_ptr<rviz::Line>(new rviz::Line(scene_manager_, scene_node_)));
+    lines_.push_back(std::shared_ptr<rviz_rendering::Line>(new rviz_rendering::Line(scene_manager_, scene_node_)));
     const Ogre::Vector3 fromVector(from.transforms[i].translation.x, from.transforms[i].translation.y, from.transforms[i].translation.z);
     const Ogre::Vector3 toVector(to.transforms[i].translation.x, to.transforms[i].translation.y, to.transforms[i].translation.z);
     lines_.back()->setPoints(fromVector, toVector);

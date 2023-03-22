@@ -1,18 +1,18 @@
-#ifndef \
-  MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_POINT_CONNECTION_VISUAL_HPP_
-#define \
-  MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_POINT_CONNECTION_VISUAL_HPP_
+#ifndef MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_POINT_CONNECTION_VISUAL_HPP_
+#define MULTI_DOF_JOINT_TRAJECTORY_RVIZ_PLUGINS_MULTI_DOF_JOINT_TRAJECTORY_POINT_CONNECTION_VISUAL_HPP_
+// Ogre
+#include <OgreVector3.h>
+#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
 
-#include <OGRE/OgreVector3.h>
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreSceneManager.h>
+// Rviz
+#include <rviz_rendering/objects/line.hpp>
+#include <rviz_rendering/objects/movable_text.hpp>
+#include "rviz_rendering/visibility_control.hpp"
+#include <rviz_default_plugins/displays/marker/markers/text_view_facing_marker.hpp>
 
-#include <rviz/ogre_helpers/line.h>
-#include <rviz/ogre_helpers/movable_text.h>
-
-#include <rviz/default_plugin/markers/text_view_facing_marker.h>
-
-#include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
+// ROS msgs
+#include <trajectory_msgs/msg/multi_dof_joint_trajectory_point.hpp>
 
 
 namespace multi_dof_joint_trajectory_rviz_plugins
@@ -24,8 +24,8 @@ public:
   MultiDOFJointTrajectoryPointConnectionVisual(
     Ogre::SceneManager * scene_manager,
     Ogre::SceneNode * parent_node,
-    const trajectory_msgs::MultiDOFJointTrajectoryPoint & from,
-    const trajectory_msgs::MultiDOFJointTrajectoryPoint & to,
+    const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint & from,
+    const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint & to,
     float show_connection,
     const Ogre::ColourValue & color);
   virtual ~MultiDOFJointTrajectoryPointConnectionVisual();
@@ -41,7 +41,7 @@ private:
 
   Ogre::SceneNode * scene_node_;
 
-  std::vector<boost::shared_ptr<rviz::Line>> lines_;
+  std::vector<std::shared_ptr<rviz_rendering::Line>> lines_;
 
   float show_connection_;
   Ogre::ColourValue color_;

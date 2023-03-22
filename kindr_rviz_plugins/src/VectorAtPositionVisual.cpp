@@ -27,15 +27,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <OgreVector3.h>
-#include <OgreSceneNode.h>
-#include <OgreSceneManager.h>
-
-#include "rviz_rendering/objects/arrow.hpp"
-#include <rviz_rendering/objects/billboard_line.hpp>
-#include <rviz_rendering/objects/movable_text.hpp>
-
-#include "rviz_rendering/visibility_control.hpp"
 
 #include "kindr_rviz_plugins/VectorAtPositionVisual.hpp"
 

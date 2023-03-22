@@ -8,7 +8,7 @@ namespace multi_dof_joint_trajectory_rviz_plugins {
 MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
     Ogre::SceneManager* scene_manager,
     Ogre::SceneNode* parent_node,
-    const trajectory_msgs::MultiDOFJointTrajectoryPoint& msg,
+    const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint& msg,
     bool show_transform_rotation,
     bool show_velocity_linear,
     bool show_velocity_angular,
@@ -29,12 +29,12 @@ MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
     float font_size,
     bool show_text)
 : scene_manager_(scene_manager),
-  axis_radius_per_size_(0.1),
   show_transform_rotation_(show_transform_rotation),
   show_velocity_linear_(show_velocity_linear),
   show_velocity_angular_(show_velocity_angular),
   show_acceleration_linear_(show_acceleration_linear),
   show_acceleration_angular_(show_acceleration_angular),
+  axis_radius_per_size_(0.1),
   size_transform_rotation_(size_transform_rotation),
   diameter_arrows_(diameter_arrows),
   scale_velocity_linear_(scale_velocity_linear),
@@ -67,7 +67,7 @@ MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
 
     // transform rotation
     const Ogre::Quaternion orientation(msg.transforms[i].rotation.w, msg.transforms[i].rotation.x, msg.transforms[i].rotation.y, msg.transforms[i].rotation.z);
-    transforms_rotation_.push_back(boost::shared_ptr<rviz::Axes>(new rviz::Axes(scene_manager_, transforms_position_.back(), size_transform_rotation, axis_radius_per_size_*size_transform_rotation)));
+    transforms_rotation_.push_back(std::shared_ptr<rviz_rendering::Axes>(new rviz_rendering::Axes(scene_manager_, transforms_position_.back(), size_transform_rotation, axis_radius_per_size_*size_transform_rotation)));
     transforms_rotation_.back()->setOrientation(orientation);
 
     // define common variables
@@ -78,7 +78,7 @@ MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
       // velocity linear
       vector = Ogre::Vector3(msg.velocities[i].linear.x, msg.velocities[i].linear.y, msg.velocities[i].linear.z);
       velocities_linear_absolute_.push_back(vector.length());
-      velocities_linear_.push_back(boost::shared_ptr<rviz::Arrow>(new rviz::Arrow(
+      velocities_linear_.push_back(std::shared_ptr<rviz_rendering::Arrow>(new rviz_rendering::Arrow(
           scene_manager,
           transforms_position_.back(),
           0.8*scale_velocity_linear_*velocities_linear_absolute_.back(),
@@ -90,7 +90,7 @@ MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
       // velocity angular
       vector = Ogre::Vector3(msg.velocities[i].angular.x, msg.velocities[i].angular.y, msg.velocities[i].angular.z);
       velocities_angular_absolute_.push_back(vector.length());
-      velocities_angular_.push_back(boost::shared_ptr<rviz::Arrow>(new rviz::Arrow(
+      velocities_angular_.push_back(std::shared_ptr<rviz_rendering::Arrow>(new rviz_rendering::Arrow(
           scene_manager,
           transforms_position_.back(),
           0.8*scale_velocity_angular_*velocities_angular_absolute_.back(),
@@ -105,7 +105,7 @@ MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
       // acceleration linear
       vector = Ogre::Vector3(msg.accelerations[i].linear.x, msg.accelerations[i].linear.y, msg.accelerations[i].linear.z);
       accelerations_linear_absolute_.push_back(vector.length());
-      accelerations_linear_.push_back(boost::shared_ptr<rviz::Arrow>(new rviz::Arrow(
+      accelerations_linear_.push_back(std::shared_ptr<rviz_rendering::Arrow>(new rviz_rendering::Arrow(
           scene_manager,
           transforms_position_.back(),
           0.8*scale_acceleration_linear_*accelerations_linear_absolute_.back(),
@@ -117,7 +117,7 @@ MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
       // acceleration angular
       vector = Ogre::Vector3(msg.accelerations[i].angular.x, msg.accelerations[i].angular.y, msg.accelerations[i].angular.z);
       accelerations_angular_absolute_.push_back(vector.length());
-      accelerations_angular_.push_back(boost::shared_ptr<rviz::Arrow>(new rviz::Arrow(
+      accelerations_angular_.push_back(std::shared_ptr<rviz_rendering::Arrow>(new rviz_rendering::Arrow(
           scene_manager,
           transforms_position_.back(),
           0.8*scale_acceleration_angular_*accelerations_angular_absolute_.back(),
@@ -128,10 +128,10 @@ MultiDOFJointTrajectoryPointVisual::MultiDOFJointTrajectoryPointVisual(
     }
 
     // text
-    auto text = boost::shared_ptr<rviz::MovableText>(new rviz::MovableText(captions_[i]));
+    auto text = std::shared_ptr<rviz_rendering::MovableText>(new rviz_rendering::MovableText(captions_[i]));
     text->setCharacterHeight(getCharacterHeight());
     texts_.push_back(text);
-    texts_.back()->setTextAlignment(rviz::MovableText::H_CENTER, rviz::MovableText::V_BELOW);
+    texts_.back()->setTextAlignment(rviz_rendering::MovableText::H_CENTER, rviz_rendering::MovableText::V_BELOW);
     transforms_position_.back()->attachObject(texts_.back().get());
   }
 

@@ -3,17 +3,18 @@
 
 #include <vector>
 
-#include <OGRE/OgreVector3.h>
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreSceneManager.h>
+#include <OgreVector3.h>
+#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
 
-#include <rviz/ogre_helpers/arrow.h>
-#include <rviz/ogre_helpers/axes.h>
-#include <rviz/ogre_helpers/movable_text.h>
+#include "rviz_rendering/objects/arrow.hpp"
+#include "rviz_rendering/objects/axes.hpp"
+#include "rviz_rendering/objects/movable_text.hpp"
 
-#include <rviz/default_plugin/markers/text_view_facing_marker.h>
 
-#include <trajectory_msgs/MultiDOFJointTrajectoryPoint.h>
+#include <rviz_default_plugins/displays/marker/markers/text_view_facing_marker.hpp>
+
+#include <trajectory_msgs/msg/multi_dof_joint_trajectory_point.hpp>
 
 
 namespace multi_dof_joint_trajectory_rviz_plugins
@@ -25,7 +26,7 @@ public:
   MultiDOFJointTrajectoryPointVisual(
     Ogre::SceneManager * scene_manager,
     Ogre::SceneNode * parent_node,
-    const trajectory_msgs::MultiDOFJointTrajectoryPoint & msg,
+    const trajectory_msgs::msg::MultiDOFJointTrajectoryPoint & msg,
     bool show_transform_rotation,
     bool show_velocity_linear,
     bool show_velocity_angular,
@@ -94,12 +95,12 @@ private:
   Ogre::SceneManager * scene_manager_;
 
   std::vector<Ogre::SceneNode *> transforms_position_;
-  std::vector<boost::shared_ptr<rviz::Axes>> transforms_rotation_;
-  std::vector<boost::shared_ptr<rviz::Arrow>> velocities_linear_;
-  std::vector<boost::shared_ptr<rviz::Arrow>> velocities_angular_;
-  std::vector<boost::shared_ptr<rviz::Arrow>> accelerations_linear_;
-  std::vector<boost::shared_ptr<rviz::Arrow>> accelerations_angular_;
-  std::vector<boost::shared_ptr<rviz::MovableText>> texts_;
+  std::vector<std::shared_ptr<rviz_rendering::Axes>> transforms_rotation_;
+  std::vector<std::shared_ptr<rviz_rendering::Arrow>> velocities_linear_;
+  std::vector<std::shared_ptr<rviz_rendering::Arrow>> velocities_angular_;
+  std::vector<std::shared_ptr<rviz_rendering::Arrow>> accelerations_linear_;
+  std::vector<std::shared_ptr<rviz_rendering::Arrow>> accelerations_angular_;
+  std::vector<std::shared_ptr<rviz_rendering::MovableText>> texts_;
 
   std::vector<double> velocities_linear_absolute_;
   std::vector<double> velocities_angular_absolute_;

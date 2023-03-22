@@ -4,10 +4,18 @@
 // rviz
 #include <rviz_default_plugins/displays/marker/markers/text_view_facing_marker.hpp>
 #include "rviz_default_plugins/visibility_control.hpp"
+#include "rviz_rendering/objects/arrow.hpp"
+#include <rviz_rendering/objects/billboard_line.hpp>
+#include <rviz_rendering/objects/movable_text.hpp>
+#include "rviz_rendering/visibility_control.hpp"
 
 // kindr ros
 #include <kindr_msgs/msg/vector_at_position.hpp>
 
+// Ogre
+#include <OgreVector3.h>
+#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
 
 namespace rviz_rendering
 {

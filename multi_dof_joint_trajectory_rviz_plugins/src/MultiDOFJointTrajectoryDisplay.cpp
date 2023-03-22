@@ -29,112 +29,112 @@ MultiDOFJointTrajectoryDisplay::MultiDOFJointTrajectoryDisplay()
 {
   connect(this, SIGNAL(updateTrajectorySignal()), this, SLOT(updateTrajectory()));
 
-  property_show_connection_ = new rviz::BoolProperty(
+  property_show_connection_ = new rviz_common::properties::BoolProperty(
       "Show Connections", show_connection_,
       "Enable or disable connections rendering.",
       this, SLOT(setShowConnection()));
 
-  property_show_transform_rotation_ = new rviz::BoolProperty(
+  property_show_transform_rotation_ = new rviz_common::properties::BoolProperty(
       "Show Transform Rotation", show_transform_rotation_,
       "Enable or disable rotation transforms rendering.",
       this, SLOT(setShowTransformRotation()));
 
-  property_show_velocity_linear_ = new rviz::BoolProperty(
+  property_show_velocity_linear_ = new rviz_common::properties::BoolProperty(
       "Show Velocity Linear", show_velocity_linear_,
       "Enable or disable linear velocities rendering.",
       this, SLOT(setShowVelocityLinear()));
 
-  property_show_velocity_angular_ = new rviz::BoolProperty(
+  property_show_velocity_angular_ = new rviz_common::properties::BoolProperty(
       "Show Velocity Angular", show_velocity_angular_,
       "Enable or disable angular velocities rendering.",
       this, SLOT(setShowVelocityAngular()));
 
-  property_show_acceleration_linear_ = new rviz::BoolProperty(
+  property_show_acceleration_linear_ = new rviz_common::properties::BoolProperty(
       "Show Acceleration Linear", show_acceleration_linear_,
       "Enable or disable linear accelerations rendering.",
       this, SLOT(setShowAccelerationLinear()));
 
-  property_show_acceleration_angular_ = new rviz::BoolProperty(
+  property_show_acceleration_angular_ = new rviz_common::properties::BoolProperty(
       "Show Acceleration Angular", show_acceleration_angular_,
       "Enable or disable angular accelerations rendering.",
       this, SLOT(setShowAccelerationAngular()));
 
-  property_size_transform_rotation_ = new rviz::FloatProperty(
+  property_size_transform_rotation_ = new rviz_common::properties::FloatProperty(
       "Size Transform Rotation", size_transform_rotation_,
       "Size of the axes of the rotation transforms.",
       this, SLOT(setSizeTransformRotation()));
   property_size_transform_rotation_->setMin(0);
 
-  property_diameter_arrows_ = new rviz::FloatProperty(
+  property_diameter_arrows_ = new rviz_common::properties::FloatProperty(
       "Diameter Arrows", diameter_arrows_,
       "Diameter of the arrows.",
       this, SLOT(setDiameterArrows()));
   property_diameter_arrows_->setMin(0);
 
-  property_scale_velocity_linear_ = new rviz::FloatProperty(
+  property_scale_velocity_linear_ = new rviz_common::properties::FloatProperty(
       "Scale Velocity Linear", scale_velocity_linear_,
       "Scale of the linear velocities.",
       this, SLOT(setScaleVelocityLinear()));
 
-  property_scale_velocity_angular_ = new rviz::FloatProperty(
+  property_scale_velocity_angular_ = new rviz_common::properties::FloatProperty(
       "Scale Velocity Angular", scale_velocity_angular_,
       "Scale of the angular velocities.",
       this, SLOT(setScaleVelocityAngular()));
 
-  property_scale_acceleration_linear_ = new rviz::FloatProperty(
+  property_scale_acceleration_linear_ = new rviz_common::properties::FloatProperty(
       "Scale Acceleration Linear", scale_acceleration_linear_,
       "Scale of the linear accelerations.",
       this, SLOT(setScaleAccelerationLinear()));
 
-  property_scale_acceleration_angular_ = new rviz::FloatProperty(
+  property_scale_acceleration_angular_ = new rviz_common::properties::FloatProperty(
       "Scale Acceleration Angular", scale_acceleration_angular_,
       "Scale of the angular accelerations.",
       this, SLOT(setScaleAccelerationAngular()));
 
-  property_color_connection_ = new rviz::ColorProperty(
-      "Color Connection", rviz::ogreToQt(color_connection_),
+  property_color_connection_ = new rviz_common::properties::ColorProperty(
+      "Color Connection", rviz_common::properties::ogreToQt(color_connection_),
       "Color of connection lines.",
       this, SLOT(setColorConnection()));
 
-  property_color_velocity_linear_ = new rviz::ColorProperty(
-      "Color Velocity Linear", rviz::ogreToQt(color_velocity_linear_),
+  property_color_velocity_linear_ = new rviz_common::properties::ColorProperty(
+      "Color Velocity Linear", rviz_common::properties::ogreToQt(color_velocity_linear_),
       "Color of the linear velocities.",
       this, SLOT(setColorVelocityLinear()));
 
-  property_color_velocity_angular_ = new rviz::ColorProperty(
-      "Color Velocity Angular", rviz::ogreToQt(color_velocity_angular_),
+  property_color_velocity_angular_ = new rviz_common::properties::ColorProperty(
+      "Color Velocity Angular", rviz_common::properties::ogreToQt(color_velocity_angular_),
       "Color of the angular velocities.",
       this, SLOT(setColorVelocityAngular()));
 
-  property_color_acceleration_linear_ = new rviz::ColorProperty(
-      "Color Acceleration Linear", rviz::ogreToQt(color_acceleration_linear_),
+  property_color_acceleration_linear_ = new rviz_common::properties::ColorProperty(
+      "Color Acceleration Linear", rviz_common::properties::ogreToQt(color_acceleration_linear_),
       "Color of the linear accelerations.",
       this, SLOT(setColorAccelerationLinear()));
 
-  property_color_acceleration_angular_ = new rviz::ColorProperty(
-      "Color Acceleration Angular", rviz::ogreToQt(color_acceleration_angular_),
+  property_color_acceleration_angular_ = new rviz_common::properties::ColorProperty(
+      "Color Acceleration Angular", rviz_common::properties::ogreToQt(color_acceleration_angular_),
       "Color of the angular accelerations.",
       this, SLOT(setColorAccelerationAngular()));
 
-  property_alpha_ = new rviz::FloatProperty(
+  property_alpha_ = new rviz_common::properties::FloatProperty(
       "Alpha", alpha_,
       "0 is fully transparent, 1.0 is fully opaque.",
       this, SLOT(setAlpha()));
   property_alpha_->setMin(0);
   property_alpha_->setMax(1);
 
-  property_font_size_ = new rviz::FloatProperty(
+  property_font_size_ = new rviz_common::properties::FloatProperty(
       "Font Size", font_size_,
       "Size of the font.",
       this, SLOT(setFontSize()));
   property_font_size_->setMin(0);
 
-  property_show_text_ = new rviz::BoolProperty(
+  property_show_text_ = new rviz_common::properties::BoolProperty(
       "Show Caption", show_text_,
       "Enable or disable text rendering.",
       this, SLOT(setShowText()));
 
-  property_history_length_ = new rviz::IntProperty(
+  property_history_length_ = new rviz_common::properties::IntProperty(
       "History Length", 1,
       "Number of prior measurements to display.",
       this, SLOT(setHistoryLength()));
@@ -250,35 +250,35 @@ void MultiDOFJointTrajectoryDisplay::setAlpha()
 
 void MultiDOFJointTrajectoryDisplay::setColorConnection()
 {
-  color_connection_ = rviz::qtToOgre(property_color_connection_->getColor());
+  color_connection_ = rviz_common::properties::qtToOgre(property_color_connection_->getColor());
   color_connection_.a = property_alpha_->getFloat();
   updateColorConnection();
 }
 
 void MultiDOFJointTrajectoryDisplay::setColorVelocityLinear()
 {
-  color_velocity_linear_ = rviz::qtToOgre(property_color_velocity_linear_->getColor());
+  color_velocity_linear_ = rviz_common::properties::qtToOgre(property_color_velocity_linear_->getColor());
   color_velocity_linear_.a = property_alpha_->getFloat();
   updateColorVelocityLinear();
 }
 
 void MultiDOFJointTrajectoryDisplay::setColorVelocityAngular()
 {
-  color_velocity_angular_ = rviz::qtToOgre(property_color_velocity_angular_->getColor());
+  color_velocity_angular_ = rviz_common::properties::qtToOgre(property_color_velocity_angular_->getColor());
   color_velocity_angular_.a = property_alpha_->getFloat();
   updateColorVelocityAngular();
 }
 
 void MultiDOFJointTrajectoryDisplay::setColorAccelerationLinear()
 {
-  color_acceleration_linear_ = rviz::qtToOgre(property_color_acceleration_linear_->getColor());
+  color_acceleration_linear_ = rviz_common::properties::qtToOgre(property_color_acceleration_linear_->getColor());
   color_acceleration_linear_.a = property_alpha_->getFloat();
   updateColorAccelerationLinear();
 }
 
 void MultiDOFJointTrajectoryDisplay::setColorAccelerationAngular()
 {
-  color_acceleration_angular_ = rviz::qtToOgre(property_color_acceleration_angular_->getColor());
+  color_acceleration_angular_ = rviz_common::properties::qtToOgre(property_color_acceleration_angular_->getColor());
   color_acceleration_angular_.a = property_alpha_->getFloat();
   updateColorAccelerationAngular();
 }
@@ -316,11 +316,11 @@ void MultiDOFJointTrajectoryDisplay::updateTrajectory() {
     scale_acceleration_linear_  = property_scale_acceleration_linear_->getFloat();
     scale_acceleration_angular_ = property_scale_acceleration_angular_->getFloat();
 
-    color_connection_           = rviz::qtToOgre(property_color_connection_->getColor());
-    color_velocity_linear_      = rviz::qtToOgre(property_color_velocity_linear_->getColor());
-    color_velocity_angular_     = rviz::qtToOgre(property_color_velocity_angular_->getColor());
-    color_acceleration_linear_  = rviz::qtToOgre(property_color_acceleration_linear_->getColor());
-    color_acceleration_angular_ = rviz::qtToOgre(property_color_acceleration_angular_->getColor());
+    color_connection_           = rviz_common::properties::qtToOgre(property_color_connection_->getColor());
+    color_velocity_linear_      = rviz_common::properties::qtToOgre(property_color_velocity_linear_->getColor());
+    color_velocity_angular_     = rviz_common::properties::qtToOgre(property_color_velocity_angular_->getColor());
+    color_acceleration_linear_  = rviz_common::properties::qtToOgre(property_color_acceleration_linear_->getColor());
+    color_acceleration_angular_ = rviz_common::properties::qtToOgre(property_color_acceleration_angular_->getColor());
     alpha_ = property_alpha_->getFloat();
     color_connection_.a           = alpha_;
     color_velocity_linear_.a      = alpha_;
@@ -335,7 +335,7 @@ void MultiDOFJointTrajectoryDisplay::updateTrajectory() {
         for (unsigned int j = 0; j < current_trajectory_->joint_names.size(); j++)
         {
             std::stringstream ss;
-            ss << current_trajectory_->joint_names[j] << ": t" << i << " = " << current_trajectory_->points[i].time_from_start.toSec() << "s";
+            ss << current_trajectory_->joint_names[j] << ": t" << i << " = " << current_trajectory_->points[i].time_from_start.sec << "s";
             caption_point.push_back(ss.str());
         }
         captions.push_back(caption_point);
@@ -344,14 +344,14 @@ void MultiDOFJointTrajectoryDisplay::updateTrajectory() {
     font_size_ = property_font_size_->getFloat();
     show_text_ = property_show_text_->getBool();
 
-    std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointVisual>> visuals_points;
-    std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>> visuals_connections;
+    std::vector<std::shared_ptr<MultiDOFJointTrajectoryPointVisual>> visuals_points;
+    std::vector<std::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>> visuals_connections;
 
-    trajectory_msgs::MultiDOFJointTrajectoryPoint last_point;
-    trajectory_msgs::MultiDOFJointTrajectoryPoint current_point = current_trajectory_->points[0];
+    trajectory_msgs::msg::MultiDOFJointTrajectoryPoint last_point;
+    trajectory_msgs::msg::MultiDOFJointTrajectoryPoint current_point = current_trajectory_->points[0];
 
     // add first point
-    visuals_points.push_back(boost::shared_ptr<MultiDOFJointTrajectoryPointVisual>(new MultiDOFJointTrajectoryPointVisual(
+    visuals_points.push_back(std::shared_ptr<MultiDOFJointTrajectoryPointVisual>(new MultiDOFJointTrajectoryPointVisual(
             context_->getSceneManager(),
             scene_node_,
             current_point,
@@ -383,7 +383,7 @@ void MultiDOFJointTrajectoryDisplay::updateTrajectory() {
         current_point = current_trajectory_->points[i];
 
         // add edge to predecessor
-        visuals_connections.push_back(boost::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>(new MultiDOFJointTrajectoryPointConnectionVisual(context_->getSceneManager(),
+        visuals_connections.push_back(std::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>(new MultiDOFJointTrajectoryPointConnectionVisual(context_->getSceneManager(),
                                                                                                                                                        scene_node_,
                                                                                                                                                        last_point,
                                                                                                                                                        current_point,
@@ -391,7 +391,7 @@ void MultiDOFJointTrajectoryDisplay::updateTrajectory() {
                                                                                                                                                        color_connection_)));
 
         // add pose
-        visuals_points.push_back(boost::shared_ptr<MultiDOFJointTrajectoryPointVisual>(new MultiDOFJointTrajectoryPointVisual(
+        visuals_points.push_back(std::shared_ptr<MultiDOFJointTrajectoryPointVisual>(new MultiDOFJointTrajectoryPointVisual(
                 context_->getSceneManager(),
                 scene_node_,
                 current_point,
@@ -420,7 +420,7 @@ void MultiDOFJointTrajectoryDisplay::updateTrajectory() {
     visuals_connections_.push_back(visuals_connections);
 }
 
-void MultiDOFJointTrajectoryDisplay::processMessage(const trajectory_msgs::MultiDOFJointTrajectory::ConstPtr& msg)
+void MultiDOFJointTrajectoryDisplay::processMessage(const trajectory_msgs::msg::MultiDOFJointTrajectory::ConstSharedPtr msg)
 {
   current_trajectory_ = msg;
   Q_EMIT updateTrajectorySignal();
@@ -648,5 +648,5 @@ void MultiDOFJointTrajectoryDisplay::updateShowText()
 
 } // multi_dof_joint_trajectory_rviz_plugins
 
-#include <pluginlib/class_list_macros.h>
-PLUGINLIB_EXPORT_CLASS(multi_dof_joint_trajectory_rviz_plugins::MultiDOFJointTrajectoryDisplay, rviz::Display)
+#include <pluginlib/class_list_macros.hpp>
+PLUGINLIB_EXPORT_CLASS(multi_dof_joint_trajectory_rviz_plugins::MultiDOFJointTrajectoryDisplay, rviz_common::Display)

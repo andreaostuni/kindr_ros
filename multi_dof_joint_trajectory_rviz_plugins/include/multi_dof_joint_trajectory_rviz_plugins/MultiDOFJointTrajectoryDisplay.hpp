@@ -6,22 +6,22 @@
 
 #include <boost/circular_buffer.hpp>
 
-#include <rviz/message_filter_display.h>
-#include <trajectory_msgs/MultiDOFJointTrajectory.h>
+#include <rviz_common/message_filter_display.hpp>
+#include <trajectory_msgs/msg/multi_dof_joint_trajectory.hpp>
 #endif
 
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreSceneManager.h>
+#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
 
-#include <tf/transform_listener.h>
+#include <tf2_ros/transform_listener.h>
 
-#include <rviz/visualization_manager.h>
-#include <rviz/properties/bool_property.h>
-#include <rviz/properties/int_property.h>
-#include <rviz/properties/float_property.h>
-#include <rviz/properties/color_property.h>
-#include <rviz/properties/parse_color.h>
-#include <rviz/frame_manager.h>
+#include <rviz_common/visualization_manager.hpp>
+#include <rviz_common/properties/bool_property.hpp>
+#include <rviz_common/properties/int_property.hpp>
+#include <rviz_common/properties/float_property.hpp>
+#include <rviz_common/properties/color_property.hpp>
+#include <rviz_common/properties/parse_color.hpp>
+#include <rviz_common/frame_manager_iface.hpp>
 
 #include "multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryPointConnectionVisual.hpp"
 #include "multi_dof_joint_trajectory_rviz_plugins/MultiDOFJointTrajectoryPointVisual.hpp"
@@ -30,7 +30,7 @@
 namespace multi_dof_joint_trajectory_rviz_plugins
 {
 
-class MultiDOFJointTrajectoryDisplay : public rviz::MessageFilterDisplay<trajectory_msgs::MultiDOFJointTrajectory>
+class MultiDOFJointTrajectoryDisplay : public rviz_common::MessageFilterDisplay<trajectory_msgs::msg::MultiDOFJointTrajectory>
 {
   Q_OBJECT
 
@@ -75,7 +75,7 @@ private Q_SLOTS:
   void updateTrajectory();
 
 private:
-  void processMessage(const trajectory_msgs::MultiDOFJointTrajectory::ConstPtr & msg);
+  void processMessage(const trajectory_msgs::msg::MultiDOFJointTrajectory::ConstSharedPtr msg);
 
   void updateShowConnection();
   void updateShowTransformRotation();
@@ -101,37 +101,37 @@ private:
   void updateFontSize();
   void updateShowText();
 
-  boost::circular_buffer<std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointVisual>>>
+  boost::circular_buffer<std::vector<std::shared_ptr<MultiDOFJointTrajectoryPointVisual>>>
   visuals_points_;
-  boost::circular_buffer<std::vector<boost::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>>>
+  boost::circular_buffer<std::vector<std::shared_ptr<MultiDOFJointTrajectoryPointConnectionVisual>>>
   visuals_connections_;
 
-  rviz::BoolProperty * property_show_connection_;
-  rviz::BoolProperty * property_show_transform_rotation_;
-  rviz::BoolProperty * property_show_velocity_linear_;
-  rviz::BoolProperty * property_show_velocity_angular_;
-  rviz::BoolProperty * property_show_acceleration_linear_;
-  rviz::BoolProperty * property_show_acceleration_angular_;
+  rviz_common::properties::BoolProperty * property_show_connection_;
+  rviz_common::properties::BoolProperty * property_show_transform_rotation_;
+  rviz_common::properties::BoolProperty * property_show_velocity_linear_;
+  rviz_common::properties::BoolProperty * property_show_velocity_angular_;
+  rviz_common::properties::BoolProperty * property_show_acceleration_linear_;
+  rviz_common::properties::BoolProperty * property_show_acceleration_angular_;
 
-  rviz::FloatProperty * property_size_transform_rotation_;
-  rviz::FloatProperty * property_diameter_arrows_;
-  rviz::FloatProperty * property_scale_velocity_linear_;
-  rviz::FloatProperty * property_scale_velocity_angular_;
-  rviz::FloatProperty * property_scale_acceleration_linear_;
-  rviz::FloatProperty * property_scale_acceleration_angular_;
+  rviz_common::properties::FloatProperty * property_size_transform_rotation_;
+  rviz_common::properties::FloatProperty * property_diameter_arrows_;
+  rviz_common::properties::FloatProperty * property_scale_velocity_linear_;
+  rviz_common::properties::FloatProperty * property_scale_velocity_angular_;
+  rviz_common::properties::FloatProperty * property_scale_acceleration_linear_;
+  rviz_common::properties::FloatProperty * property_scale_acceleration_angular_;
 
-  rviz::ColorProperty * property_color_connection_;
-  rviz::ColorProperty * property_color_velocity_linear_;
-  rviz::ColorProperty * property_color_velocity_angular_;
-  rviz::ColorProperty * property_color_acceleration_linear_;
-  rviz::ColorProperty * property_color_acceleration_angular_;
+  rviz_common::properties::ColorProperty * property_color_connection_;
+  rviz_common::properties::ColorProperty * property_color_velocity_linear_;
+  rviz_common::properties::ColorProperty * property_color_velocity_angular_;
+  rviz_common::properties::ColorProperty * property_color_acceleration_linear_;
+  rviz_common::properties::ColorProperty * property_color_acceleration_angular_;
 
-  rviz::FloatProperty * property_alpha_;
+  rviz_common::properties::FloatProperty * property_alpha_;
 
-  rviz::FloatProperty * property_font_size_;
-  rviz::BoolProperty * property_show_text_;
+  rviz_common::properties::FloatProperty * property_font_size_;
+  rviz_common::properties::BoolProperty * property_show_text_;
 
-  rviz::IntProperty * property_history_length_;
+  rviz_common::properties::IntProperty * property_history_length_;
 
   bool show_connection_;
   bool show_transform_rotation_;
@@ -157,7 +157,7 @@ private:
   float font_size_;
   bool show_text_;
 
-  trajectory_msgs::MultiDOFJointTrajectory::ConstPtr current_trajectory_;
+  trajectory_msgs::msg::MultiDOFJointTrajectory::ConstSharedPtr current_trajectory_;
 };
 
 } // multi_dof_joint_trajectory_rviz_plugins

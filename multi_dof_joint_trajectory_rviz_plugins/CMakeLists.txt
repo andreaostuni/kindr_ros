@@ -50,6 +50,11 @@ set(multi_dof_joint_trajectory_rviz_plugins_SRCS
   src/MultiDOFJointTrajectoryPointVisual.cpp
 )
 
+add_library(${library_name} SHARED
+  ${multi_dof_joint_trajectory_rviz_plugins_SRCS}
+  ${multi_dof_joint_trajectory_rviz_plugins_headers_to_moc}
+)
+
 set(dependencies
   ament_cmake
   pluginlib
@@ -61,9 +66,7 @@ set(dependencies
   trajectory_msgs
   )
 
-ament_target_dependencies(${library_name}
-  ${dependencies}
-)
+ament_target_dependencies(${library_name} ${dependencies})
 
 target_include_directories(${library_name} PUBLIC
   ${Qt5Widgets_INCLUDE_DIRS}

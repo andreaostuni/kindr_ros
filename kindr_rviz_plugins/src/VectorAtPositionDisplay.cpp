@@ -1,17 +1,3 @@
-// ogre
-#include <OgreSceneNode.h>
-#include <OgreSceneManager.h>
-
-// tf
-#include <tf2_ros/transform_listener.h>
-
-// rviz
-#include <rviz_common/visualization_manager.hpp>
-#include <rviz_common/properties/color_property.hpp>
-#include <rviz_common/properties/float_property.hpp>
-#include <rviz_common/properties/int_property.hpp>
-#include <rviz_common/frame_manager_iface.hpp>
-
 // kindr rviz plugins
 #include "kindr_rviz_plugins/VectorAtPositionDisplay.hpp"
 #include "kindr_rviz_plugins/VectorAtPositionVisual.hpp"
